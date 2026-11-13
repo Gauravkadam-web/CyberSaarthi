@@ -1,6 +1,6 @@
 # Requirements Traceability Matrix (RTM)
 ## CyberSaarthi — Cybercrime Awareness and Reporting Portal
-**Version:** 1.0 | **Status:** Baseline draft (Phase 0)
+**Version:** 1.0 | **Status:** Baseline draft (Phase 1 updated)
 
 This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD.md) to its architectural component, database entities, target implementation phase, test strategy, and current status.
 
@@ -43,3 +43,14 @@ This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD
 This RTM is a living document. At the conclusion of each development phase, update:
 1. The **Status** column (`Planned` $\rightarrow$ `In Progress` $\rightarrow$ `Verified`).
 2. The specific test case names and commit hashes validating the requirement.
+
+---
+
+## 4. Phase 1 Deliverables & Evidence Log
+
+| Deliverable | Document Path | Verification Notes & Artifacts | Status |
+|---|---|---|---|
+| **Literature Review & Gap Matrix** | `docs-research/literature-review/literature-review-matrix.md` | Benchmarked 7 major scholarly publications, identified 4 distinct research gaps (G-1 to G-4), refined RQ-A1 to RQ-B1. | **Verified** |
+| **Official Reporting & Disclaimers** | `docs/official-reporting-and-disclaimers.md` | Frozen official Indian helpline numbers (1930), portal links (cybercrime.gov.in, sancharsaathi.gov.in), and standardized UI disclaimer copy. | **Verified** |
+| **Incident Taxonomy v1.0** | `docs/taxonomy-v1.0.md` | Formalized 8 mutually exclusive incident categories, keywords, boundaries, and synthetic example narratives. | **Verified** |
+| **Product Analysis & UI Wireframes** | `docs/product-analysis-and-wireframes.md` | Documented 4 user roles, detailed 3 core workflows (Mermaid), and produced layout wireframes for all major screens. | **Verified** |
