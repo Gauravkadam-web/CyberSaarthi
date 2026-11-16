@@ -1,6 +1,6 @@
 # Requirements Traceability Matrix (RTM)
 ## CyberSaarthi — Cybercrime Awareness and Reporting Portal
-**Version:** 1.0 | **Status:** Baseline draft (Phase 1 updated)
+**Version:** 1.2 | **Status:** Phase 2 Updated
 
 This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD.md) to its architectural component, database entities, target implementation phase, test strategy, and current status.
 
@@ -14,7 +14,7 @@ This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD
 | **FR-02** | Browse, filter, and search published awareness content | Spring Boot (`awareness`), React | `awareness_topics` | Phase 6 | Unit tests for topic visibility (DRAFT vs PUBLISHED); UI component tests | Planned |
 | **FR-03** | Awareness assessments (quizzes, score calculation, feedback) | Spring Boot (`assessment`), React | `quiz_questions`, `quiz_attempts` | Phase 6 | Deterministic scoring tests; answer integrity checks (correct answers hidden from unsubmitted payloads) | Planned |
 | **FR-04** | Structured incident report submission & validation | Spring Boot (`reports`), React | `incident_reports`, `report_status_history` | Phase 7 | Backend validation tests (payload size, no PII/passwords); reference code uniqueness tests; offline ML degradation tests | Planned |
-| **FR-05** | ML-assisted categorisation & advisory inference | FastAPI (`inference`), Spring Boot (`classification`) | `ml_predictions`, `incident_categories` | Phase 3, 4, 8 | Contract tests for FastAPI schema; timeout/retry tests; low-confidence fallback & review flag verification | Planned |
+| **FR-05** | ML-assisted categorisation & advisory inference | FastAPI (`inference`), Spring Boot (`classification`) | `ml_predictions`, `incident_categories` | Phase 3, 4, 8 | Contract tests for FastAPI schema; timeout/retry tests; low-confidence fallback & review flag verification | **In Progress** |
 | **FR-06** | User report history & application status tracking | Spring Boot (`reports`), React | `incident_reports`, `report_status_history` | Phase 7 | Access control & record ownership tests; chronological status history tests | Planned |
 | **FR-07** | Administrator review queue & status management | Spring Boot (`admin`), React | `incident_reports`, `review_notes`, `audit_events` | Phase 7 | RBAC tests (non-admin forbidden); state machine transition validation; audit logging tests; internal notes privacy checks | Planned |
 | **FR-08** | Awareness content & taxonomy administration | Spring Boot (`admin`, `awareness`), React | `awareness_topics`, `incident_categories` | Phase 6, 7 | Admin-only mutation tests; taxonomy version immutability verification | Planned |
@@ -35,13 +35,13 @@ This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD
 | **NFR-07** | Maintainability | Layered architecture (controller-service-repository), clean code | Spring Boot modular monolith, thin controllers, clean separation | All phases | Code review against `AGENTS.md` guidelines | In Progress |
 | **NFR-08** | Portability | Environment-driven configuration across dev and demo | `.env.example`, configurable properties, docker-ready | Phase 0, 5, 11 | Multi-environment validation tests | In Progress |
 | **NFR-09** | Auditability | Immutable audit trail for all sensitive administrative actions | `audit_events` table populated on status and category updates | Phase 7 | Audit persistence and tamper-resistance verification tests | Planned |
-| **NFR-10** | Reproducibility | Fixed random seeds, logged splits, versioned taxonomy & model artifacts | Experiment logging scripts, pinned dependency versions, model cards | Phase 2, 3, 4 | Independent re-execution of ML training and evaluation pipeline | Planned |
+| **NFR-10** | Reproducibility | Fixed random seeds, logged splits, versioned taxonomy & model artifacts | Experiment logging scripts, pinned dependency versions, model cards | Phase 2, 3, 4 | Independent re-execution of ML training and evaluation pipeline | **In Progress** |
 
 ---
 
 ## 3. Maintenance and Updates
 This RTM is a living document. At the conclusion of each development phase, update:
-1. The **Status** column (`Planned` $\rightarrow$ `In Progress` $\rightarrow$ `Verified`).
+1. The **Status** column (`Planned` → `In Progress` → `Verified`).
 2. The specific test case names and commit hashes validating the requirement.
 
 ---
@@ -54,3 +54,17 @@ This RTM is a living document. At the conclusion of each development phase, upda
 | **Official Reporting & Disclaimers** | `docs/official-reporting-and-disclaimers.md` | Frozen official Indian helpline numbers (1930), portal links (cybercrime.gov.in, sancharsaathi.gov.in), and standardized UI disclaimer copy. | **Verified** |
 | **Incident Taxonomy v1.0** | `docs/taxonomy-v1.0.md` | Formalized 8 mutually exclusive incident categories, keywords, boundaries, and synthetic example narratives. | **Verified** |
 | **Product Analysis & UI Wireframes** | `docs/product-analysis-and-wireframes.md` | Documented 4 user roles, detailed 3 core workflows (Mermaid), and produced layout wireframes for all major screens. | **Verified** |
+
+---
+
+## 5. Phase 2 Deliverables & Evidence Log
+
+| Deliverable | Document Path | Notes | Status |
+|---|---|---|---|
+| **Dataset Candidates Shortlist** | `docs-research/experiments/dataset-candidates.md` | Evaluated 5 candidates; C-1 (Kaggle CC BY 4.0) selected as primary. Team must download CSV before audit runs. | **Verified** |
+| **Dataset Audit Script** | `ml/data/audit_dataset.py` | Python script: missing values, length filter, exact dedup, near-dup (cosine), language filter, PII scan. Outputs to `ml/data/audit_output/`. | **Verified** |
+| **Dataset Audit Report (template)** | `docs-research/experiments/dataset-audit-report.md` | Template ready; to be populated after dataset is downloaded and script is run. | **Pending execution** |
+| **Taxonomy Mapping Specification** | `docs-research/experiments/taxonomy-mapping-v1.0.md` | Template with common label mappings pre-filled; to be completed after audit output reviewed. | **Pending execution** |
+| **Frozen Experiment Protocol** | `docs-research/experiments/experiment-protocol.md` | Frozen: seed=42, 70/15/15 split, TF-IDF (1-2 gram, 10k features), 3 models, model selection rule, confidence threshold=0.60. | **Verified** |
+| **ML Requirements (pinned)** | `ml/training/requirements.txt` | scikit-learn 1.4.2, pandas 2.2.2, numpy 1.26.4, fastapi 0.111.0, pytest 8.2.0 — all pinned. | **Verified** |
+| **Data directory gitignore rules** | `ml/data/raw/.gitignore`, `ml/data/processed/.gitignore`, `ml/data/audit_output/.gitignore`, `ml/training/artifacts/.gitignore` | Raw data, processed splits, and model artifacts excluded from Git. | **Verified** |

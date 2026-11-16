@@ -1,0 +1,8 @@
+# ml/training/artifacts/   — Trained model and vectorizer artifacts
+# joblib files are gitignored to avoid committing large binaries.
+# Archive these externally (e.g., GitHub Release, cloud storage) with their MD5 hash.
+*.joblib
+*.pkl
+*.json
+!.gitignore
+

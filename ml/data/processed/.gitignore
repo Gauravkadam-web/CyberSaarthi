@@ -1,0 +1,8 @@
+# ml/data/processed/  — Cleaned and split datasets
+# Contents (train.csv, val.csv, test.csv, labeled_clean.csv) are gitignored
+# because they may contain sensitive content or be very large.
+# They are reproducible from the raw data + audit_dataset.py.
+*
+!.gitignore
+!.gitkeep
+

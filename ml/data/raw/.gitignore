@@ -1,0 +1,10 @@
+# ml/data/raw/   — Raw downloaded datasets (CSV, JSON, etc.)
+# This directory is intentionally NOT committed to Git.
+# Large data files should be stored here locally only.
+#
+# To add this directory to Git tracking for small files only,
+# remove this .gitignore and create explicit .gitkeep after audit.
+*
+!.gitignore
+!.gitkeep
+
