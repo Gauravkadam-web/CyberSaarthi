@@ -84,3 +84,17 @@ This RTM is a living document. At the conclusion of each development phase, upda
 | **Master End-to-End Runner** | `ml/training/run_pipeline.py` | Unified runner script executing preprocessing, feature fitting, training, and evaluation in one command. | **Verified** |
 | **Standalone Evaluator & CLI Test** | `ml/training/evaluate.py` | Single-sample CLI predictor and split evaluator with confidence threshold (0.60) routing. | **Verified** |
 | **Baseline Evaluation Report** | `ml/reports/baseline-evaluation-report.md` | Comprehensive academic evaluation report with per-class report, confusion matrix, error analysis. | **Verified** |
+
+---
+
+## 7. Phase 4 Deliverables & Evidence Log
+
+| Deliverable | Document Path | Notes | Status |
+|---|---|---|---|
+| **FastAPI Application & Lifespan** | `ml/inference/main.py` | Lifespan context loads artifacts into memory on boot; sub-millisecond serving; zero-PII telemetry logging. | **Verified** |
+| **Pydantic v2 Request/Response Schemas** | `ml/inference/schemas.py` | Strict validation: min 10 chars, max 3000 chars, taxonomy version check, typed JSON schemas. | **Verified** |
+| **Classifier Service Singleton** | `ml/inference/service.py` | Encapsulates model and vectorizer; implements 0.60 confidence threshold routing; provides Taxonomy v1.0 specifications. | **Verified** |
+| **Service Configuration & Security** | `ml/inference/config.py` | Port 8000, host 127.0.0.1, restricted CORS boundary (Spring Boot origin `localhost:8080`). | **Verified** |
+| **Automated Test Suite (12 Tests)** | `ml/tests/test_health.py`, `test_classify.py`, `conftest.py` | 100% pass rate (12/12) covering health, taxonomy, classification, threshold routing, and 422/400 validation. | **Verified** |
+| **Launcher Scripts** | `scripts/run_ml_service.bat`, `run_ml_service.ps1` | One-click service launcher scripts for Windows cmd and PowerShell. | **Verified** |
+| **Service Documentation** | `ml/inference/README.md` | API usage guide, cURL examples, and interactive Swagger docs URL (`/docs`). | **Verified** |
