@@ -1,0 +1,243 @@
+{
+  "protocol_version": "1.0",
+  "taxonomy_version": "1.0",
+  "trained_at": "2026-11-19 10:10:47",
+  "winning_model_name": "Logistic Regression",
+  "model_file": "baseline_model.joblib",
+  "model_sha256": "0adb8a434a5f208b47d43225206c56352d56b42514aa35e0fcdf11da0e8f7d7f",
+  "vectorizer_file": "tfidf_vectorizer.joblib",
+  "vectorizer_sha256": "b3ab37db1ce97400321c44520a4c069ea9361444ee4ac2c3604a541ef022435b",
+  "random_seed": 42,
+  "taxonomy_categories": [
+    "CYBERSTALKING_HARASSMENT",
+    "FINANCIAL_UPI_FRAUD",
+    "IDENTITY_THEFT",
+    "JOB_INVESTMENT_SCAM",
+    "MALWARE_RANSOMWARE",
+    "OTHER_UNCLASSIFIED",
+    "PHISHING_SOCIAL_ENGINEERING",
+    "SOCIAL_ACCOUNT_COMPROMISE"
+  ],
+  "score_semantics": "predict_proba",
+  "confidence_threshold": 0.6,
+  "validation_comparison": [
+    {
+      "model_name": "Logistic Regression",
+      "val_macro_f1": 0.9244,
+      "val_weighted_f1": 0.9845,
+      "val_accuracy": 0.9847,
+      "latency_per_sample_ms": 0.0008
+    },
+    {
+      "model_name": "Multinomial Naive Bayes",
+      "val_macro_f1": 0.8935,
+      "val_weighted_f1": 0.9597,
+      "val_accuracy": 0.9601,
+      "latency_per_sample_ms": 0.0091
+    },
+    {
+      "model_name": "Linear SVM (Platt Calibrated)",
+      "val_macro_f1": 0.8927,
+      "val_weighted_f1": 0.9889,
+      "val_accuracy": 0.9893,
+      "latency_per_sample_ms": 0.0103
+    }
+  ],
+  "test_metrics": {
+    "accuracy": 0.9839,
+    "macro_f1": 0.882,
+    "weighted_f1": 0.9836,
+    "macro_precision": 0.9183,
+    "macro_recall": 0.8529,
+    "latency_p50_ms": 0.459,
+    "latency_p95_ms": 0.954,
+    "latency_p99_ms": 1.624,
+    "classification_report": {
+      "CYBERSTALKING_HARASSMENT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 81.0
+      },
+      "FINANCIAL_UPI_FRAUD": {
+        "precision": 0.9933920704845814,
+        "recall": 0.9761904761904762,
+        "f1-score": 0.9847161572052402,
+        "support": 462.0
+      },
+      "IDENTITY_THEFT": {
+        "precision": 1.0,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.9411764705882353,
+        "support": 9.0
+      },
+      "JOB_INVESTMENT_SCAM": {
+        "precision": 0.8888888888888888,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.8888888888888888,
+        "support": 9.0
+      },
+      "MALWARE_RANSOMWARE": {
+        "precision": 0.8571428571428571,
+        "recall": 0.6666666666666666,
+        "f1-score": 0.75,
+        "support": 9.0
+      },
+      "OTHER_UNCLASSIFIED": {
+        "precision": 0.625,
+        "recall": 0.625,
+        "f1-score": 0.625,
+        "support": 8.0
+      },
+      "PHISHING_SOCIAL_ENGINEERING": {
+        "precision": 0.9821917808219178,
+        "recall": 1.0,
+        "f1-score": 0.9910158949550795,
+        "support": 717.0
+      },
+      "SOCIAL_ACCOUNT_COMPROMISE": {
+        "precision": 1.0,
+        "recall": 0.7777777777777778,
+        "f1-score": 0.875,
+        "support": 9.0
+      },
+      "accuracy": 0.9838957055214724,
+      "macro avg": {
+        "precision": 0.9183269496672807,
+        "recall": 0.8529265873015872,
+        "f1-score": 0.8819746764546805,
+        "support": 1304.0
+      },
+      "weighted avg": {
+        "precision": 0.9838135959566546,
+        "recall": 0.9838957055214724,
+        "f1-score": 0.9835834735789164,
+        "support": 1304.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        81,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        451,
+        0,
+        0,
+        0,
+        0,
+        11,
+        0
+      ],
+      [
+        0,
+        0,
+        8,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        6,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        0,
+        0,
+        0,
+        5,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        717,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        7
+      ]
+    ],
+    "confusion_labels": [
+      "CYBERSTALKING_HARASSMENT",
+      "FINANCIAL_UPI_FRAUD",
+      "IDENTITY_THEFT",
+      "JOB_INVESTMENT_SCAM",
+      "MALWARE_RANSOMWARE",
+      "OTHER_UNCLASSIFIED",
+      "PHISHING_SOCIAL_ENGINEERING",
+      "SOCIAL_ACCOUNT_COMPROMISE"
+    ],
+    "sample_errors": [
+      {
+        "actual": "FINANCIAL_UPI_FRAUD",
+        "predicted": "PHISHING_SOCIAL_ENGINEERING",
+        "confidence": 0.6847,
+        "text_snippet": "this is inspector anita sharma from ncb. your mobile number was used to open a fraudulent account used in online fraud. report to our online"
+      },
+      {
+        "actual": "FINANCIAL_UPI_FRAUD",
+        "predicted": "PHISHING_SOCIAL_ENGINEERING",
+        "confidence": 0.6954,
+        "text_snippet": "alert from ncb: suspicious online fraud activity detected linked to your driving license. your cooperation is mandatory under the it act. do"
+      },
+      {
+        "actual": "FINANCIAL_UPI_FRAUD",
+        "predicted": "PHISHING_SOCIAL_ENGINEERING",
+        "confidence": 0.536,
+        "text_snippet": "your phone number has been traced to illegal foreign exchange violation operations. senior officer rekha verma from sebi fraud division is c"
+      },
+      {
+        "actual": "IDENTITY_THEFT",
+        "predicted": "PHISHING_SOCIAL_ENGINEERING",
+        "confidence": 0.6729,
+        "text_snippet": "found out through credit bureau report that three credit cards were issued in my name to an address in another state where i never lived."
+      },
+      {
+        "actual": "OTHER_UNCLASSIFIED",
+        "predicted": "PHISHING_SOCIAL_ENGINEERING",
+        "confidence": 0.3931,
+        "text_snippet": "i found a tracking device airtag in my backpack that does not belong to me or my family. how do i report this?"
+      }
+    ]
+  }
+}

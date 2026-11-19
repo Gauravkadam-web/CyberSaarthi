@@ -68,3 +68,19 @@ This RTM is a living document. At the conclusion of each development phase, upda
 | **Frozen Experiment Protocol** | `docs-research/experiments/experiment-protocol.md` | Frozen: seed=42, stratified split, TF-IDF (1-2 gram, 10k features), 3 models (MNB, LR, Linear SVM), threshold=0.60. | **Verified** |
 | **ML Requirements & Virtual Environment** | `ml/training/requirements.txt`, `ml/.venv` | Pinned packages and verified virtual environment (scikit-learn 1.4.2, pandas 2.2.2, numpy 1.26.4, nltk 3.8.1). | **Verified** |
 | **Data directory gitignore rules** | `ml/data/raw/.gitignore`, `ml/data/processed/.gitignore`, `ml/data/audit_output/.gitignore`, `ml/training/artifacts/.gitignore` | Raw data, processed splits, and model artifacts excluded from Git. | **Verified** |
+
+---
+
+## 6. Phase 3 Deliverables & Evidence Log
+
+| Deliverable | Document Path | Notes | Status |
+|---|---|---|---|
+| **Preprocessing & Stratified Splitting** | `ml/training/preprocess.py` | Cleaned 8,690 samples into 70/15/15 stratified partitions (seed 42) with full 8-class taxonomy coverage. | **Verified** |
+| **Train-Only TF-IDF Vectorizer** | `ml/training/features.py` | Fitted exclusively on train partition; generated 6,612 features; zero cross-split leakage. | **Verified** |
+| **Model Training & Hyperparameter Tuning** | `ml/training/train.py` | 5-fold CV on Train partition for MNB, Logistic Regression, and Linear SVM (Platt calibrated). | **Verified** |
+| **Validation Comparison & Model Selection** | `ml/training/train.py`, `model_metadata.json` | Logistic Regression won on Validation Macro-F1 (0.9244) under pre-declared protocol rule. | **Verified** |
+| **Single-Pass Held-Out Test Evaluation** | `ml/training/train.py`, `baseline-evaluation-report.md` | Test Accuracy: 98.39%, Macro-F1: 0.8820, Weighted-F1: 0.9836, Latency: 0.459 ms (p50). | **Verified** |
+| **Model Artifacts & Checksums** | `ml/training/artifacts/` | Serialized `baseline_model.joblib`, `tfidf_vectorizer.joblib`, and `model_metadata.json`. | **Verified** |
+| **Master End-to-End Runner** | `ml/training/run_pipeline.py` | Unified runner script executing preprocessing, feature fitting, training, and evaluation in one command. | **Verified** |
+| **Standalone Evaluator & CLI Test** | `ml/training/evaluate.py` | Single-sample CLI predictor and split evaluator with confidence threshold (0.60) routing. | **Verified** |
+| **Baseline Evaluation Report** | `ml/reports/baseline-evaluation-report.md` | Comprehensive academic evaluation report with per-class report, confusion matrix, error analysis. | **Verified** |
