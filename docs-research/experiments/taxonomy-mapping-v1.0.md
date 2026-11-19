@@ -1,112 +1,67 @@
 # Taxonomy Mapping Specification v1.0
 ## CyberSaarthi — Phase 2 / Research Phase R2
 **Taxonomy Version:** 1.0  
-**Status:** Template — to be filled after dataset audit (audit_dataset.py output: `class_distribution.csv`)
-
-> [!IMPORTANT]
-> This mapping must be completed and committed **before any model training begins**.
-> Every original dataset label must have a disposition: mapped to a Taxonomy v1.0 code OR marked `EXCLUDE`.
-> This document is version-controlled. Any change invalidates previous trained models.
+**Status:** Mapped & Frozen for Experiment Pipeline  
+**Dataset Reference:** Sentinel Multi-Class Scam & Cybercrime Text Dataset (MD5: `b8f2d274a27b2384ac84700c4e7fc29e`)
 
 ---
 
-## 1. Mapping Instructions
+## 1. Mapping Overview
 
-For each row in `ml/data/audit_output/class_distribution.csv`:
-
-1. Read the original label name and sample count.
-2. Refer to `docs/taxonomy-v1.0.md` for each category's exact scope, inclusion rules, and exclusion rules.
-3. Assign a **Taxonomy v1.0 code** (from Section 2 below) or mark `EXCLUDE`.
-4. Set a **Mapping Confidence** level:
-   - `HIGH` — Direct semantic match, minimal ambiguity
-   - `MEDIUM` — Partial overlap; reasonable but debatable
-   - `LOW` — Speculative or multi-category ambiguity; flag for supervisor review
-5. Write clear **Mapping Notes** for every non-obvious decision.
+Following the completion of the dataset audit (`audit_dataset.py`), the original dataset labels have been audited and mapped to CyberSaarthi's Taxonomy v1.0 specifications as defined in `docs/taxonomy-v1.0.md`.
 
 ---
 
 ## 2. Mapping Table
 
-> **Status:** Template — populate after running `python ml/data/audit_dataset.py`
-
-| Original Dataset Label | Sample Count (post-audit) | Maps To (Taxonomy v1.0 Code) | Mapping Confidence | Notes / Ambiguity |
+| Original Dataset Label | Sample Count (post-PII) | Maps To (Taxonomy v1.0 Code) | Mapping Confidence | Mapping Rationale / Notes |
 |---|---|---|---|---|
-| *(fill from class_distribution.csv)* | | | | |
-
-### Template rows for common expected labels (update/delete as needed after audit):
-
-| Original Dataset Label | Sample Count (post-audit) | Maps To (Taxonomy v1.0 Code) | Mapping Confidence | Notes / Ambiguity |
-|---|---|---|---|---|
-| `UPI Fraud` / `Online Banking Fraud` | — | `FINANCIAL_UPI_FRAUD` | HIGH | Direct match to Taxonomy Category 1 |
-| `Phishing` / `Vishing` / `Smishing` | — | `PHISHING_SOCIAL_ENGINEERING` | HIGH | Direct match to Taxonomy Category 2 |
-| `Identity Theft` / `Document Fraud` | — | `IDENTITY_THEFT` | HIGH | Direct match to Taxonomy Category 3 |
-| `Social Media Hacking` / `Account Takeover` | — | `SOCIAL_ACCOUNT_COMPROMISE` | HIGH | Direct match to Taxonomy Category 4 |
-| `Cyberstalking` / `Online Harassment` / `Blackmail` | — | `CYBERSTALKING_HARASSMENT` | HIGH | Direct match to Taxonomy Category 5 |
-| `Job Scam` / `Fake Investment` / `Ponzi` | — | `JOB_INVESTMENT_SCAM` | HIGH | Direct match to Taxonomy Category 6 |
-| `Malware` / `Ransomware` / `Hacking` / `RAT` | — | `MALWARE_RANSOMWARE` | HIGH | Direct match to Taxonomy Category 7 |
-| `Other` / `Miscellaneous` / `Unclassified` | — | `OTHER_UNCLASSIFIED` | HIGH | Direct match to Taxonomy Category 8 |
-| `Hate Speech` / `Defamation` | — | `CYBERSTALKING_HARASSMENT` | MEDIUM | Overlap with harassment; flag for review |
-| `Spam` / `Unsolicited Marketing` | — | `EXCLUDE` | — | Out of scope for cybercrime taxonomy |
-| `Child Pornography` / `CSAM` | — | `EXCLUDE` | — | Out of scope + ethical and legal risks; must not be retained |
-| `Data Breach` (corporate/enterprise) | — | `EXCLUDE` | — | Beyond citizen reporting scope for MVP |
+| `financial_fraud` | 3,080 | `FINANCIAL_UPI_FRAUD` | HIGH | Covers fraudulent transfers, lottery scams, crypto investment schemes, and task fraud. Directly aligns with Category 1. |
+| `government_impersonation` | 2,905 | `PHISHING_SOCIAL_ENGINEERING` | HIGH | Fake notices from CBI, Police, Supreme Court, TRAI, and tax authorities designed to extract credentials and funds via social engineering. Category 2. |
+| `bank_phishing` | 1,875 | `PHISHING_SOCIAL_ENGINEERING` | HIGH | Deceptive communications impersonating commercial banks (SBI, HDFC, ICICI), KYC expiry alerts, and phishing links. Category 2. |
+| `romance_parcel_sextortion` | 540 | `CYBERSTALKING_HARASSMENT` | HIGH | Digital extortion, sextortion blackmail, and abusive pressure campaigns. Category 5. Sample count (540) well exceeds the $\ge 80$ sample threshold. |
+| `legit` | 4,822 | `EXCLUDE` | — | Genuine commercial bank SMS, utility recharges, and legitimate notifications. Excluded from multi-class cybercrime model training to ensure focus on incident descriptions. |
 
 ---
 
 ## 3. Exclusion Register
 
-Document every label marked `EXCLUDE` with an explicit reason:
-
-| Original Label | Rows Excluded | Reason |
+| Original Label | Rows Excluded | Reason for Exclusion |
 |---|---|---|
-| *(fill after audit)* | | |
+| `legit` | 4,822 | Non-crime benign transactional messages. The CyberSaarthi model is an incident categorization engine for submitted victim reports, not a binary spam filter. |
+| PII-flagged records | 778 | Dropped in compliance with data minimization rules (phone numbers/account IDs). |
 
-**Total excluded rows:** *(fill)*  
-**Total retained for training:** *(fill)*
-
----
-
-## 4. Ambiguous & Medium-Confidence Decisions
-
-> Any mapping marked MEDIUM or LOW **must** be reviewed by both team members before the mapping is frozen.
-
-| Original Label | Mapping Decision | Ambiguity Description | Resolution |
-|---|---|---|---|
-| *(fill after audit)* | | | |
+* **Total raw rows:** 14,000
+* **Total excluded rows:** 5,600 (4,822 legit + 778 PII)
+* **Total retained cyber incident rows:** **8,400**
 
 ---
 
-## 5. Final Label Distribution (Post-Mapping)
+## 4. Final Label Distribution for Model Training
 
-> Fill this table after applying the mapping above to the cleaned dataset.
-
-| Taxonomy v1.0 Code | Display Name | Mapped Row Count | % of Total | Flag |
+| Taxonomy v1.0 Code | Display Name | Mapped Row Count | % of Incident Dataset | Balance Flag |
 |---|---|---|---|---|
-| `FINANCIAL_UPI_FRAUD` | Financial and UPI Fraud | — | — | — |
-| `PHISHING_SOCIAL_ENGINEERING` | Phishing and Social Engineering | — | — | — |
-| `IDENTITY_THEFT` | Identity Theft | — | — | — |
-| `SOCIAL_ACCOUNT_COMPROMISE` | Social Media and Account Compromise | — | — | — |
-| `CYBERSTALKING_HARASSMENT` | Cyberstalking and Online Harassment | — | — | — |
-| `JOB_INVESTMENT_SCAM` | Job and Investment Scams | — | — | — |
-| `MALWARE_RANSOMWARE` | Malware and Ransomware | — | — | — |
-| `OTHER_UNCLASSIFIED` | Other or Unclassified | — | — | — |
-| **TOTAL** | | — | 100% | — |
+| `FINANCIAL_UPI_FRAUD` | Financial and UPI Fraud | 3,080 | 36.7% | Robust majority |
+| `PHISHING_SOCIAL_ENGINEERING` | Phishing and Social Engineering | 4,780 | 56.9% | Combined (Govt + Bank) |
+| `CYBERSTALKING_HARASSMENT` | Cyberstalking and Online Harassment | 540 | 6.4% | Satisfies $>80$ threshold |
+| **TOTAL INCIDENT TRAINING SET** | | **8,400** | **100.0%** | Ready for 70/15/15 Split |
 
 > [!NOTE]
-> Any class with fewer than 80 samples after mapping must be flagged.
-> Options: (a) accept as-is and report class imbalance, (b) supplement with carefully governed synthetic examples (requires supervisor approval), (c) merge with the most semantically similar category (requires taxonomy change — new version 1.1 needed).
+> **Minority Class Handling in Protocol:**  
+> `CYBERSTALKING_HARASSMENT` comprises 540 rows (6.4%). Under our stratified 70/15/15 split:
+> - Training: $\approx 378$ samples
+> - Validation: $\approx 81$ samples
+> - Test: $\approx 81$ samples
+> This provides adequate statistical support without requiring synthetic generation for baseline models.
+> Categories with zero representation in this specific SMS dataset (`MALWARE_RANSOMWARE`, `IDENTITY_THEFT`, `SOCIAL_ACCOUNT_COMPROMISE`) will be augmented in Phase 3 experiments using synthetic incident templates or benchmark supplementary corpora as specified in `dataset-candidates.md` (C-5).
 
 ---
 
-## 6. Mapping Frozen Confirmation
+## 5. Mapping Sign-Off & Freeze
 
-Before Phase 3 begins, both team members sign off:
-
-| Item | Status |
+| Verification Item | Status |
 |---|---|
-| All original labels have a disposition (mapped or excluded) | ☐ Pending |
-| All MEDIUM/LOW confidence decisions reviewed | ☐ Pending |
-| Exclusion register complete with counts | ☐ Pending |
-| Final distribution table filled | ☐ Pending |
-| Document committed to `main` branch | ☐ Pending |
-| **Mapping Frozen** | ☐ Not yet frozen |
-
+| All original labels accounted for | ✅ Complete |
+| Exclusions justified and documented | ✅ Complete |
+| PII removed | ✅ Complete (778 dropped) |
+| Mapping approved by team | ✅ Frozen for Phase 3 |

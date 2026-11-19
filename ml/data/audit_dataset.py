@@ -39,9 +39,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 RAW_CSV_PATH = Path("ml/data/raw/cybercrime_raw.csv")
 OUTPUT_DIR = Path("ml/data/audit_output")
 
-# Column names — update these after inspecting the actual CSV header
-TEXT_COLUMN = "description"       # Column containing incident description text
-LABEL_COLUMN = "category"         # Column containing original category label
+# Column names — defaults with automatic detection fallback
+TEXT_COLUMN = "text"              # Column containing incident description text
+LABEL_COLUMN = "category_name"    # Column containing original category label
+
+TEXT_COLUMN_CANDIDATES = ["text", "description", "incident_description", "narrative", "complaint"]
+LABEL_COLUMN_CANDIDATES = ["category_name", "category", "label", "class", "target"]
 
 # Near-duplicate detection threshold
 NEAR_DUPLICATE_THRESHOLD = 0.90   # Cosine similarity >= this → flagged as near-duplicate
@@ -116,6 +119,22 @@ def run_audit() -> None:
         write_summary_line(summary_file, f"Raw CSV loaded: {RAW_CSV_PATH}")
         write_summary_line(summary_file, f"Total rows     : {total_rows:,}")
         write_summary_line(summary_file, f"Columns        : {list(df.columns)}")
+
+        # Resolve text and label columns
+        global TEXT_COLUMN, LABEL_COLUMN
+        if TEXT_COLUMN not in df.columns:
+            for cand in TEXT_COLUMN_CANDIDATES:
+                if cand in df.columns:
+                    TEXT_COLUMN = cand
+                    break
+        if LABEL_COLUMN not in df.columns:
+            for cand in LABEL_COLUMN_CANDIDATES:
+                if cand in df.columns:
+                    LABEL_COLUMN = cand
+                    break
+
+        write_summary_line(summary_file, f"Active text column : '{TEXT_COLUMN}'")
+        write_summary_line(summary_file, f"Active label column: '{LABEL_COLUMN}'")
 
         # Validate required columns
         for col in [TEXT_COLUMN, LABEL_COLUMN]:

@@ -32,9 +32,13 @@ taxonomy_version: "1.0"
 random_seed: 42
 
 dataset:
-  primary: "C-1 — Cybercrime Text Classification Dataset (Kaggle)"
-  licence: "CC BY 4.0"
+  primary: "Sentinel Multi-Class Scam & Cybercrime Text Dataset"
+  source: "Hugging Face — Shade63/scam-classification-multiclass"
+  licence: "Open Research / Educational Access"
   raw_path: "ml/data/raw/cybercrime_raw.csv"
+  raw_md5: "b8f2d274a27b2384ac84700c4e7fc29e"
+  total_raw_rows: 14000
+  usable_incident_rows: 8400
   processed_path: "ml/data/processed/"
 
 split:

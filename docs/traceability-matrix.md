@@ -61,10 +61,10 @@ This RTM is a living document. At the conclusion of each development phase, upda
 
 | Deliverable | Document Path | Notes | Status |
 |---|---|---|---|
-| **Dataset Candidates Shortlist** | `docs-research/experiments/dataset-candidates.md` | Evaluated 5 candidates; C-1 (Kaggle CC BY 4.0) selected as primary. Team must download CSV before audit runs. | **Verified** |
-| **Dataset Audit Script** | `ml/data/audit_dataset.py` | Python script: missing values, length filter, exact dedup, near-dup (cosine), language filter, PII scan. Outputs to `ml/data/audit_output/`. | **Verified** |
-| **Dataset Audit Report (template)** | `docs-research/experiments/dataset-audit-report.md` | Template ready; to be populated after dataset is downloaded and script is run. | **Pending execution** |
-| **Taxonomy Mapping Specification** | `docs-research/experiments/taxonomy-mapping-v1.0.md` | Template with common label mappings pre-filled; to be completed after audit output reviewed. | **Pending execution** |
-| **Frozen Experiment Protocol** | `docs-research/experiments/experiment-protocol.md` | Frozen: seed=42, 70/15/15 split, TF-IDF (1-2 gram, 10k features), 3 models, model selection rule, confidence threshold=0.60. | **Verified** |
-| **ML Requirements (pinned)** | `ml/training/requirements.txt` | scikit-learn 1.4.2, pandas 2.2.2, numpy 1.26.4, fastapi 0.111.0, pytest 8.2.0 — all pinned. | **Verified** |
+| **Dataset Candidates Shortlist** | `docs-research/experiments/dataset-candidates.md` | Evaluated 5 candidates; downloaded Sentinel Indian Cybercrime Dataset (MD5: `b8f2d274a27b2384ac84700c4e7fc29e`). | **Verified** |
+| **Dataset Audit Script** | `ml/data/audit_dataset.py` | Executed programmatically; audited 14,000 raw rows, zero missing, zero language violations, detected 778 PII rows. | **Verified** |
+| **Dataset Audit Report** | `docs-research/experiments/dataset-audit-report.md` | Fully populated with audit metrics; 778 PII rows dropped, 13,222 usable rows (8,400 cyber incidents), dataset approved. | **Verified** |
+| **Taxonomy Mapping Specification** | `docs-research/experiments/taxonomy-mapping-v1.0.md` | Mapped and frozen across 4 incident classes + legit exclusion; 8,400 clean samples ready for 70/15/15 split. | **Verified** |
+| **Frozen Experiment Protocol** | `docs-research/experiments/experiment-protocol.md` | Frozen: seed=42, stratified split, TF-IDF (1-2 gram, 10k features), 3 models (MNB, LR, Linear SVM), threshold=0.60. | **Verified** |
+| **ML Requirements & Virtual Environment** | `ml/training/requirements.txt`, `ml/.venv` | Pinned packages and verified virtual environment (scikit-learn 1.4.2, pandas 2.2.2, numpy 1.26.4, nltk 3.8.1). | **Verified** |
 | **Data directory gitignore rules** | `ml/data/raw/.gitignore`, `ml/data/processed/.gitignore`, `ml/data/audit_output/.gitignore`, `ml/training/artifacts/.gitignore` | Raw data, processed splits, and model artifacts excluded from Git. | **Verified** |
