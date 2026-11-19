@@ -83,6 +83,7 @@ application-local.yml
 *.sqlite3
 *.db
 *.sql
+!**/db/migration/*.sql
 *.dump
 
 # IDE and OS files
