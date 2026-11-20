@@ -2,7 +2,7 @@
 
 > **Tagline:** *Your Guide to a Safer Digital World.*  
 > **Academic Project:** MCA Two-Member Group Project  
-> **Current Status:** Phases 0–4 Completed | Phase 5 (Spring Boot Foundation & Auth) Ready
+> **Current Status:** Phases 0–7 Completed | Phase 8 (ML Inference Integration) Ready
 
 ---
 
@@ -100,10 +100,10 @@ CyberSaarthi/
 | **Phase 2** | **Dataset Audit & ML Protocol** | ✅ Completed | Audited 14,000-sample Sentinel dataset (dropped 778 PII samples), mapped to Taxonomy v1.0, established frozen 70/15/15 stratified protocol (seed 42). |
 | **Phase 3** | **ML Baseline Development** | ✅ Completed | Evaluated Naive Bayes, Logistic Regression, Linear SVM (with Platt scaling). Logistic Regression selected as champion (Test Accuracy: **98.39%**, Macro-F1: **0.8820**, Latency p50: **0.459 ms**). Model artifacts and evaluation report published. |
 | **Phase 4** | **FastAPI ML Inference Service** | ✅ Completed | FastAPI service under `ml/inference/`, Pydantic v2 schemas, advisory scoring, low-confidence routing (`< 0.55` fallback to `OTHER_UNCLASSIFIED` / `requires_manual_review = true`), 12/12 passing pytest tests, batch/powershell launch scripts. |
-| **Phase 5** | **Spring Boot Foundation & Auth** | 🔄 *Next Up* | Spring Boot 3.4.x, Java 21, Flyway PostgreSQL migrations (`users`, `roles`, `incident_categories`), Spring Security 6 stateless JWT, RBAC, global error handling, OpenAPI docs. |
-| **Phase 6** | **Awareness Topics & Quizzes** | ⏳ Planned | Educational content catalog, deterministic scoring engine, interactive React UI. |
-| **Phase 7** | **Incident Reporting & Tracking** | ⏳ Planned | Structured reporting form, non-sequential reference codes, state workflow, admin review queue. |
-| **Phase 8** | **ML Integration** | ⏳ Planned | Spring-to-FastAPI client, resilient timeout/fallback policy (`CLASSIFICATION_PENDING`), prediction audit logs. |
+| **Phase 5** | **Spring Boot Foundation & Auth** | ✅ Completed | Spring Boot 3.4.2, Java 21, Flyway migrations (`users`, `roles`, `incident_categories`), stateless JWT auth, RBAC, 21 unit/integration tests, Swagger UI at `:8080/swagger-ui.html`. |
+| **Phase 6** | **Awareness Topics & Quizzes** | ✅ Completed | Awareness content catalog, deterministic quiz scoring engine, answer-secrecy projection, 33/33 backend tests passing, responsive React UI. |
+| **Phase 7** | **Incident Reporting & Tracking** | ✅ Completed | Flyway V4 migrations, Crockford Base32 tracking codes (`CS-YYYY-XXXXX`), data minimisation guards against card numbers/PINs, IDOR prevention, status state machine, immutable audit logs, admin review queue, 43/43 backend tests, Vite React pages. |
+| **Phase 8** | **ML Integration** | 🔄 *Next Up* | Spring-to-FastAPI client, resilient timeout/fallback policy (`CLASSIFICATION_PENDING`), prediction audit logs. |
 | **Phase 9** | **Admin Dashboard & Analytics** | ⏳ Planned | Operational queues, aggregate reporting metrics, privacy-preserving research data exports. |
 | **Phase 10** | **Quality, Security & Usability** | ⏳ Planned | Full security boundary testing, IDOR prevention verification, accessibility (WCAG 2.1 AA) audit. |
 | **Phase 11** | **Release, Documentation & Defense** | ⏳ Planned | User guide, synthetic demo seeding, research manuscript, final academic presentation. |

@@ -11,6 +11,10 @@ import QuizPage from './pages/QuizPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MyAttemptsPage from './pages/MyAttemptsPage';
+import ReportSubmissionPage from './pages/ReportSubmissionPage';
+import MyReportsPage from './pages/MyReportsPage';
+import ReportDetailPage from './pages/ReportDetailPage';
+import AdminReviewQueuePage from './pages/AdminReviewQueuePage';
 
 export default function App() {
   return (
@@ -25,6 +29,10 @@ export default function App() {
               <Route path="/awareness" element={<AwarenessCatalogPage />} />
               <Route path="/awareness/:slug" element={<TopicDetailPage />} />
               <Route path="/quizzes/:topicId" element={<QuizPage />} />
+              <Route path="/reports/new" element={<ReportSubmissionPage />} />
+              <Route path="/reports" element={<MyReportsPage />} />
+              <Route path="/reports/:id" element={<ReportDetailPage />} />
+              <Route path="/admin/reports" element={<AdminReviewQueuePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/my-attempts" element={<MyAttemptsPage />} />

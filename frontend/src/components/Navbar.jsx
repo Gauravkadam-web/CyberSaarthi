@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Shield, BookOpen, Award, User, LogOut, LogIn } from 'lucide-react';
+import { Shield, BookOpen, Award, FileText, ShieldAlert, ShieldCheck, User, LogOut, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,11 +28,36 @@ export default function Navbar() {
             </NavLink>
           </li>
 
+          <li>
+            <NavLink to="/reports/new" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ color: '#DC2626', fontWeight: 600 }}>
+              <ShieldAlert size={16} style={{ display: 'inline', marginRight: '4px' }} />
+              Report Incident
+            </NavLink>
+          </li>
+
           {isAuthenticated && (
+            <>
+              <li>
+                <NavLink to="/reports" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  <FileText size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                  My Reports
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/my-attempts" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  <Award size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                  My Assessments
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {isAdmin && (
             <li>
-              <NavLink to="/my-attempts" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                <Award size={16} style={{ display: 'inline', marginRight: '4px' }} />
-                My Assessments
+              <NavLink to="/admin/reports" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ color: '#1E3A8A', fontWeight: 700 }}>
+                <ShieldCheck size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                Review Queue
               </NavLink>
             </li>
           )}
