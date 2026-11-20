@@ -1,0 +1,63 @@
+import React from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Shield, BookOpen, Award, User, LogOut, LogIn } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+export default function Navbar() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  return (
+    <nav className="navbar" role="navigation" aria-label="Main Navigation">
+      <div className="container nav-container">
+        <Link to="/" className="nav-brand">
+          <Shield size={28} color="#1E3A8A" />
+          <span>CyberSaarthi</span>
+        </Link>
+
+        <ul className="nav-links">
+          <li>
+            <NavLink to="/awareness" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+              <BookOpen size={16} style={{ display: 'inline', marginRight: '4px' }} />
+              Awareness Hub
+            </NavLink>
+          </li>
+
+          {isAuthenticated && (
+            <li>
+              <NavLink to="/my-attempts" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                <Award size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                My Assessments
+              </NavLink>
+            </li>
+          )}
+
+          {isAuthenticated ? (
+            <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <User size={16} />
+                {user?.displayName}
+              </span>
+              <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.825rem' }}>
+                <LogOut size={14} />
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" className="nav-auth-btn">
+                <LogIn size={16} />
+                Login / Register
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
+    </nav>
+  );
+}
