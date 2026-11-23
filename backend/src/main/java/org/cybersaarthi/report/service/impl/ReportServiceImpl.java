@@ -2,6 +2,8 @@ package org.cybersaarthi.report.service.impl;
 
 import org.cybersaarthi.category.entity.IncidentCategory;
 import org.cybersaarthi.category.repository.IncidentCategoryRepository;
+import org.cybersaarthi.classification.dto.MlPredictionDto;
+import org.cybersaarthi.classification.service.ClassificationService;
 import org.cybersaarthi.common.exception.ApiException;
 import org.cybersaarthi.common.exception.ForbiddenException;
 import org.cybersaarthi.common.exception.ResourceNotFoundException;
@@ -44,6 +46,7 @@ public class ReportServiceImpl implements ReportService {
     private final IncidentCategoryRepository categoryRepository;
     private final ReferenceCodeGenerator referenceCodeGenerator;
     private final ReportStateMachine reportStateMachine;
+    private final ClassificationService classificationService;
 
     public ReportServiceImpl(
             IncidentReportRepository reportRepository,
@@ -52,7 +55,8 @@ public class ReportServiceImpl implements ReportService {
             AuditEventRepository auditEventRepository,
             IncidentCategoryRepository categoryRepository,
             ReferenceCodeGenerator referenceCodeGenerator,
-            ReportStateMachine reportStateMachine) {
+            ReportStateMachine reportStateMachine,
+            ClassificationService classificationService) {
         this.reportRepository = reportRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.reviewNoteRepository = reviewNoteRepository;
@@ -60,6 +64,7 @@ public class ReportServiceImpl implements ReportService {
         this.categoryRepository = categoryRepository;
         this.referenceCodeGenerator = referenceCodeGenerator;
         this.reportStateMachine = reportStateMachine;
+        this.classificationService = classificationService;
     }
 
     @Override
@@ -99,6 +104,13 @@ public class ReportServiceImpl implements ReportService {
             savedReport.getId(),
             String.format("{\"referenceCode\":\"%s\",\"status\":\"SUBMITTED\"}", referenceCode)
         ));
+
+        // Trigger advisory ML classification (resilient failure policy: report submission succeeds even if ML fails)
+        try {
+            classificationService.classifyAndPersist(savedReport);
+        } catch (Exception ex) {
+            log.warn("Non-fatal: ML classification could not be completed at submission time: {}", ex.getMessage());
+        }
 
         log.info("Citizen report submitted successfully with reference: {} (ID: {})", referenceCode, savedReport.getId());
 
@@ -255,6 +267,9 @@ public class ReportServiceImpl implements ReportService {
     private ReportSummaryDto mapToSummaryDto(IncidentReport report) {
         String userCat = resolveCategoryName(report.getUserSelectedCategoryId());
         String reviewedCat = resolveCategoryName(report.getReviewedCategoryId());
+        String predictedCat = classificationService.getLatestPredictionForReport(report.getId())
+            .map(MlPredictionDto::predictedCategoryName)
+            .orElse(null);
 
         return new ReportSummaryDto(
             report.getId(),
@@ -264,6 +279,7 @@ public class ReportServiceImpl implements ReportService {
             report.getCurrentStatus(),
             userCat,
             reviewedCat,
+            predictedCat,
             report.getFinancialLossAmount(),
             report.getSubmittedAt()
         );
@@ -286,6 +302,9 @@ public class ReportServiceImpl implements ReportService {
             .map(n -> new ReviewNoteDto(n.getId(), n.getAuthorId(), n.getNoteText(), n.getVisibility(), n.getCreatedAt()))
             .collect(Collectors.toList());
 
+        MlPredictionDto latestPrediction = classificationService.getLatestPredictionForReport(report.getId())
+            .orElse(null);
+
         return new ReportDetailDto(
             report.getId(),
             report.getReferenceCode(),
@@ -303,7 +322,8 @@ public class ReportServiceImpl implements ReportService {
             report.getUpdatedAt(),
             report.getClosedAt(),
             historyDtos,
-            noteDtos
+            noteDtos,
+            latestPrediction
         );
     }
 

@@ -37,6 +37,13 @@ cybersaarthi:
       expiration-ms: ${JWT_EXPIRATION_MS:86400000}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  ml:
+    base-url: ${ML_SERVICE_URL:http://localhost:8000}
+    connect-timeout-ms: ${ML_CONNECT_TIMEOUT_MS:2000}
+    read-timeout-ms: ${ML_READ_TIMEOUT_MS:3000}
+    enabled: ${ML_SERVICE_ENABLED:true}
+    taxonomy-version: ${ML_TAXONOMY_VERSION:1.0}
+    threshold: 0.60
   ml-service:
     url: ${ML_SERVICE_URL:http://localhost:8000}
     timeout-ms: ${ML_SERVICE_TIMEOUT_MS:3000}

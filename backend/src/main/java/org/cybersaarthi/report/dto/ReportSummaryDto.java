@@ -18,6 +18,7 @@ public record ReportSummaryDto(
     ReportStatus currentStatus,
     String userCategoryName,
     String reviewedCategoryName,
+    String predictedCategoryName,
     BigDecimal financialLossAmount,
     Instant submittedAt
 ) {}

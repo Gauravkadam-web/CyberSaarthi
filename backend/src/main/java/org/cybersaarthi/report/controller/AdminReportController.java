@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.cybersaarthi.classification.dto.MlPredictionDto;
+import org.cybersaarthi.classification.service.ClassificationService;
 import org.cybersaarthi.common.response.ApiResponse;
 import org.cybersaarthi.report.dto.*;
 import org.cybersaarthi.report.entity.ReportStatus;
@@ -28,9 +30,11 @@ import java.util.UUID;
 public class AdminReportController {
 
     private final ReportService reportService;
+    private final ClassificationService classificationService;
 
-    public AdminReportController(ReportService reportService) {
+    public AdminReportController(ReportService reportService, ClassificationService classificationService) {
         this.reportService = reportService;
+        this.classificationService = classificationService;
     }
 
     @GetMapping
@@ -90,5 +94,19 @@ public class AdminReportController {
 
         ReviewNoteDto note = reportService.addReviewNote(id, request, userDetails.getId());
         return new ResponseEntity<>(ApiResponse.created("Review note added successfully", note), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/reclassify")
+    @Operation(
+        summary = "Trigger ML Reclassification",
+        description = "Re-executes ML model inference for an incident report, useful for reports submitted during ML service downtime.",
+        security = @SecurityRequirement(name = "BearerAuth")
+    )
+    public ResponseEntity<ApiResponse<MlPredictionDto>> reclassifyReport(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        MlPredictionDto prediction = classificationService.reclassifyReport(id, userDetails.getId());
+        return ResponseEntity.ok(ApiResponse.success("ML reclassification executed successfully", prediction));
     }
 }

@@ -50,5 +50,10 @@ export const reportsApi = {
       visibility
     });
     return res.data;
+  },
+
+  reclassifyReport: async (id) => {
+    const res = await apiClient.post(`/admin/reports/${id}/reclassify`);
+    return res.data;
   }
 };

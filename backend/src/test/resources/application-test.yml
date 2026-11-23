@@ -34,6 +34,13 @@ cybersaarthi:
       expiration-ms: 3600000
   cors:
     allowed-origins: http://localhost:3000
+  ml:
+    base-url: http://localhost:8000
+    connect-timeout-ms: 1000
+    read-timeout-ms: 1500
+    enabled: true
+    taxonomy-version: "1.0"
+    threshold: 0.60
   ml-service:
     url: http://localhost:8000
     timeout-ms: 1000

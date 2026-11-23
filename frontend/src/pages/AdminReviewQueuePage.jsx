@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Search, Filter, AlertCircle, X, CheckCircle, MessageSquare, Tag, Eye, Lock } from 'lucide-react';
+import { ShieldCheck, Search, Filter, AlertCircle, X, CheckCircle, MessageSquare, Tag, Eye, Lock, Sparkles, RefreshCw } from 'lucide-react';
 import { reportsApi } from '../api/reportsApi';
 import { awarenessApi } from '../api/awarenessApi';
 import { STATUS_COLORS } from './MyReportsPage';
@@ -35,6 +35,7 @@ export default function AdminReviewQueuePage() {
   const [noteForm, setNoteForm] = useState({ noteText: '', visibility: 'INTERNAL' });
   const [actionSuccess, setActionSuccess] = useState(null);
   const [actionError, setActionError] = useState(null);
+  const [reclassifying, setReclassifying] = useState(false);
 
   useEffect(() => {
     if (!authLoading && (!isAuthenticated || !isAdmin)) {
@@ -159,6 +160,33 @@ export default function AdminReviewQueuePage() {
     }
   };
 
+  const handleReclassify = async () => {
+    if (!selectedReport) return;
+    setReclassifying(true);
+    setActionSuccess(null);
+    setActionError(null);
+    try {
+      const res = await reportsApi.reclassifyReport(selectedReport.id);
+      if (res.success && res.data) {
+        const refreshed = await reportsApi.getAdminReportById(selectedReport.id);
+        if (refreshed.success) setSelectedReport(refreshed.data);
+        setActionSuccess(`ML reclassification complete: ${res.data.predictedCategoryName || res.data.predictedCategoryCode}`);
+        loadQueue();
+      }
+    } catch (err) {
+      setActionError(err.response?.data?.message || 'Reclassification failed');
+    } finally {
+      setReclassifying(false);
+    }
+  };
+
+  const applyMlCategory = () => {
+    if (selectedReport?.latestPrediction?.predictedCategoryId) {
+      setStatusForm(prev => ({ ...prev, reviewedCategoryId: selectedReport.latestPrediction.predictedCategoryId }));
+      setActionSuccess('Applied ML suggested category to confirmed category selection.');
+    }
+  };
+
   if (authLoading || loading && reports.length === 0) {
     return (
       <div className="container" style={{ padding: '3rem 1rem', textAlign: 'center' }}>
@@ -235,6 +263,7 @@ export default function AdminReviewQueuePage() {
                 <th style={{ padding: '0.85rem 1rem' }}>Channel</th>
                 <th style={{ padding: '0.85rem 1rem' }}>Loss (INR)</th>
                 <th style={{ padding: '0.85rem 1rem' }}>Category</th>
+                <th style={{ padding: '0.85rem 1rem' }}>ML Advisory</th>
                 <th style={{ padding: '0.85rem 1rem' }}>Submitted At</th>
                 <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Action</th>
               </tr>
@@ -242,7 +271,7 @@ export default function AdminReviewQueuePage() {
             <tbody>
               {reports.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ padding: '2.5rem', textAlign: 'center', color: '#64748B' }}>
+                  <td colSpan="8" style={{ padding: '2.5rem', textAlign: 'center', color: '#64748B' }}>
                     No incident reports found matching current filters.
                   </td>
                 </tr>
@@ -273,6 +302,15 @@ export default function AdminReviewQueuePage() {
                       </td>
                       <td style={{ padding: '0.85rem 1rem', color: '#334155' }}>
                         {r.reviewedCategory || r.userSelectedCategory || 'Unclassified'}
+                      </td>
+                      <td style={{ padding: '0.85rem 1rem' }}>
+                        {r.predictedCategoryName ? (
+                          <span style={{ fontSize: '0.8rem', background: '#F0FDF4', color: '#166534', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid #BBF7D0', fontWeight: 600 }}>
+                            {r.predictedCategoryName}
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>Pending</span>
+                        )}
                       </td>
                       <td style={{ padding: '0.85rem 1rem', color: '#64748B', fontSize: '0.85rem' }}>
                         {new Date(r.submittedAt).toLocaleDateString()}
@@ -388,6 +426,72 @@ export default function AdminReviewQueuePage() {
                 <span>Date: <strong>{selectedReport.incidentDate}</strong></span>
                 <span>Loss: <strong>{selectedReport.financialLossAmount ? `₹${selectedReport.financialLossAmount}` : 'None'}</strong></span>
               </div>
+            </div>
+
+            {/* ML Advisory Analysis Card */}
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Sparkles size={16} color="#2563EB" /> ML Advisory Classification Analysis
+                </h4>
+                <button
+                  type="button"
+                  onClick={handleReclassify}
+                  disabled={reclassifying}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                >
+                  <RefreshCw size={13} style={{ animation: reclassifying ? 'spin 1s linear infinite' : 'none' }} />
+                  {reclassifying ? 'Re-running...' : 'Re-run ML Inference'}
+                </button>
+              </div>
+
+              {selectedReport.latestPrediction ? (
+                <div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem', background: '#FFF', padding: '0.85rem', borderRadius: '6px', border: '1px solid #E2E8F0' }}>
+                    <div>
+                      <span style={{ fontSize: '0.75rem', color: '#64748B', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Predicted Category</span>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1E40AF' }}>
+                        {selectedReport.latestPrediction.predictedCategoryName || selectedReport.latestPrediction.predictedCategoryCode}
+                      </span>
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '0.75rem', color: '#64748B', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Confidence Score</span>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: (selectedReport.latestPrediction.confidenceScore >= 0.60) ? '#16A34A' : '#D97706' }}>
+                        {selectedReport.latestPrediction.confidenceScore != null ? `${(Number(selectedReport.latestPrediction.confidenceScore) * 100).toFixed(1)}%` : 'N/A'} ({selectedReport.latestPrediction.inferenceStatus})
+                      </span>
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '0.75rem', color: '#64748B', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Model Version</span>
+                      <span style={{ fontSize: '0.85rem', color: '#475569' }}>
+                        {selectedReport.latestPrediction.modelName} ({selectedReport.latestPrediction.modelVersion})
+                      </span>
+                    </div>
+                  </div>
+
+                  {selectedReport.latestPrediction.requiresManualReview && (
+                    <div style={{ background: '#FEF3C7', border: '1px solid #FCD34D', color: '#92400E', padding: '0.5rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <AlertCircle size={14} />
+                      <span>Flagged for Human Review: Confidence is below threshold (60%) or fallback inference was used.</span>
+                    </div>
+                  )}
+
+                  {selectedReport.latestPrediction.predictedCategoryId && (
+                    <button
+                      type="button"
+                      onClick={applyMlCategory}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.35rem 0.8rem', fontSize: '0.8rem', background: '#EFF6FF', color: '#1D4ED8', borderColor: '#BFDBFE' }}
+                    >
+                      ✓ Apply as Confirmed Category
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <p style={{ color: '#64748B', fontSize: '0.85rem', margin: 0 }}>
+                  No ML prediction recorded yet for this incident report. Click "Re-run ML Inference" to generate an advisory classification.
+                </p>
+              )}
             </div>
 
             {/* Status Transition Panel */}

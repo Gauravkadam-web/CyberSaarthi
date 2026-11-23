@@ -1,6 +1,7 @@
 package org.cybersaarthi.report;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cybersaarthi.classification.repository.MlPredictionRepository;
 import org.cybersaarthi.report.dto.AddReviewNoteRequest;
 import org.cybersaarthi.report.dto.CreateReportRequest;
 import org.cybersaarthi.report.dto.UpdateReportStatusRequest;
@@ -65,6 +66,9 @@ class ReportControllerIntegrationTest {
     private AuditEventRepository auditEventRepository;
 
     @Autowired
+    private MlPredictionRepository mlPredictionRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -88,6 +92,7 @@ class ReportControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        mlPredictionRepository.deleteAll();
         reviewNoteRepository.deleteAll();
         statusHistoryRepository.deleteAll();
         auditEventRepository.deleteAll();
@@ -140,7 +145,9 @@ class ReportControllerIntegrationTest {
             .andExpect(jsonPath("$.data.statusHistory[0].toStatus").value("SUBMITTED"));
 
         assertEquals(1, reportRepository.count());
-        assertEquals(1, auditEventRepository.count());
+        // Audits: 1 for REPORT_SUBMITTED + 1 for ML_INFERENCE_EXECUTED
+        assertEquals(2, auditEventRepository.count());
+        assertEquals(1, mlPredictionRepository.count());
     }
 
     @Test
