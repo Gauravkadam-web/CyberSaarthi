@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Shield, BookOpen, Award, FileText, ShieldAlert, ShieldCheck, User, LogOut, LogIn } from 'lucide-react';
+import { Shield, BookOpen, Award, FileText, ShieldAlert, ShieldCheck, User, LogOut, LogIn, BarChart3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -54,12 +54,20 @@ export default function Navbar() {
           )}
 
           {isAdmin && (
-            <li>
-              <NavLink to="/admin/reports" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ color: '#1E3A8A', fontWeight: 700 }}>
-                <ShieldCheck size={16} style={{ display: 'inline', marginRight: '4px' }} />
-                Review Queue
-              </NavLink>
-            </li>
+            <>
+              <li>
+                <NavLink to="/admin/reports" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ color: '#1E3A8A', fontWeight: 700 }}>
+                  <ShieldCheck size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                  Review Queue
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/dashboard" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} style={{ color: '#0D9488', fontWeight: 700 }}>
+                  <BarChart3 size={16} style={{ display: 'inline', marginRight: '4px' }} />
+                  Analytics
+                </NavLink>
+              </li>
+            </>
           )}
 
           {isAuthenticated ? (

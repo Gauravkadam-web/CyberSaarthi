@@ -104,8 +104,8 @@ CyberSaarthi/
 | **Phase 6** | **Awareness Topics & Quizzes** | ✅ Completed | Awareness content catalog, deterministic quiz scoring engine, answer-secrecy projection, 33/33 backend tests passing, responsive React UI. |
 | **Phase 7** | **Incident Reporting & Tracking** | ✅ Completed | Flyway V4 migrations, Crockford Base32 tracking codes (`CS-YYYY-XXXXX`), data minimisation guards against card numbers/PINs, IDOR prevention, status state machine, immutable audit logs, admin review queue, 43/43 backend tests, Vite React pages. |
 | **Phase 8** | **ML Integration** | ✅ Completed | Spring 6 `RestClient` connecting to FastAPI (:8000), Flyway V5 migration (`ml_predictions`), resilient offline fallback policy (NFR-04), low-confidence human review routing, admin reclassify endpoint, 47/47 passing backend tests, advisory UI. |
-| **Phase 9** | **Admin Dashboard & Analytics** | 🔄 *Next Up* | Operational queues, aggregate reporting metrics, privacy-preserving research data exports. |
-| **Phase 10** | **Quality, Security & Usability** | ⏳ Planned | Full security boundary testing, IDOR prevention verification, accessibility (WCAG 2.1 AA) audit. |
+| **Phase 9** | **Admin Dashboard & Analytics** | ✅ Completed | Operational queues, aggregate reporting metrics, 8-category & channel breakdowns, educational assessment metrics, ML model diagnostics, $k=5$ small-cell masking, OWASP CSV injection defense, immutable export audit logging, 52/52 passing backend tests, React dashboard UI. |
+| **Phase 10** | **Quality, Security & Usability** | 🔄 *Next Up* | Full security boundary testing, IDOR prevention verification, accessibility (WCAG 2.1 AA) audit, evaluation. |
 | **Phase 11** | **Release, Documentation & Defense** | ⏳ Planned | User guide, synthetic demo seeding, research manuscript, final academic presentation. |
 
 ---

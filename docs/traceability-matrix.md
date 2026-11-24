@@ -18,7 +18,7 @@ This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD
 | **FR-06** | User report history & application status tracking | Spring Boot (`reports`), React | `incident_reports`, `report_status_history` | Phase 7 | Access control & record ownership tests; chronological status history tests (`ReportControllerIntegrationTest`) | **Verified** |
 | **FR-07** | Administrator review queue & status management | Spring Boot (`admin`), React | `incident_reports`, `review_notes`, `audit_events` | Phase 7 | RBAC tests (non-admin forbidden); state machine transition validation; audit logging tests; internal notes privacy checks (`ReportControllerIntegrationTest`) | **Verified** |
 | **FR-08** | Awareness content & taxonomy administration | Spring Boot (`admin`, `awareness`), React | `awareness_topics`, `incident_categories` | Phase 6, 7 | Admin-only mutation tests (`AwarenessControllerIntegrationTest`), taxonomy version immutability verification | **Verified** |
-| **FR-09** | Aggregate operational & research analytics | Spring Boot (`analytics`), React | `incident_reports`, `quiz_attempts`, `audit_events` | Phase 9 | Aggregation accuracy reconciliation; PII exclusion & small-cell suppression tests | Planned |
+| **FR-09** | Aggregate operational & research analytics | Spring Boot (`analytics`), React | `incident_reports`, `quiz_attempts`, `audit_events` | Phase 9 | Aggregation accuracy reconciliation; PII exclusion & small-cell suppression tests (`AnalyticsControllerIntegrationTest`), React admin dashboard UI | **Verified** |
 
 ---
 
@@ -130,3 +130,17 @@ This RTM is a living document. At the conclusion of each development phase, upda
 | **Admin Reclassify Endpoint** | `POST /api/v1/admin/reports/{id}/reclassify` (`AdminReportController.java`) | Enables administrators to re-run ML inference on demand for reports submitted during downtime. | **Verified** |
 | **Automated Fault-Injection Tests** | `backend/src/test/java/org/cybersaarthi/classification/ClassificationIntegrationTest.java` | 4 tests covering online high-confidence prediction, offline fallback (`SERVICE_UNAVAILABLE`), low-confidence routing (`requires_manual_review = true`), and admin reclassification. | **Verified** |
 | **Frontend UI Integration** | `ReportDetailPage.jsx`, `AdminReviewQueuePage.jsx` | Added advisory ML suggestion banner to citizen report details, ML advisory column in admin queue table, and interactive analysis card with one-click category application and re-run buttons in review modal. | **Verified** |
+
+---
+
+## 12. Phase 9 Deliverables & Evidence Log
+
+| Deliverable | Document Path / Code Reference | Notes | Status |
+|---|---|---|---|
+| **Privacy Safeguards & Sanitizers** | `CsvSanitizer.java`, `SmallCellSuppressionHelper.java` | Implemented OWASP CSV formula injection defense (`=,+,-,@`) and strict $k=5$ small-cell count masking (`<5`) for privacy preservation. | **Verified** |
+| **Analytical DTOs** | `org.cybersaarthi.analytics.dto.*` | Authored `AnalyticsOverviewDto`, `CategoryBreakdownDto`, `ChannelBreakdownDto`, `AssessmentStatsDto`, `TopicAggregateDto`, and `MlDiagnosticsDto`. | **Verified** |
+| **Analytics Service & Aggregation Queries** | `AnalyticsService.java`, `AnalyticsServiceImpl.java` | Aggregates incident counts, loss values, category and digital channel distributions, assessment pass rates, and ML diagnostics; supports de-identified CSV generation. | **Verified** |
+| **Immutable Audit Logging on Data Export** | `AnalyticsServiceImpl.java` | Generates immutable `audit_events` entries with admin actor ID, event type `RESEARCH_DATA_EXPORTED`, export UUID, and metadata on every research CSV generation. | **Verified** |
+| **Admin Analytics Controller** | `org.cybersaarthi.analytics.controller.AnalyticsController.java` | Secured endpoints (`@PreAuthorize("hasRole('ADMIN')")`): `/overview`, `/categories`, `/channels`, `/assessments`, `/ml-diagnostics`, `/export/incidents`, `/export/assessments`. | **Verified** |
+| **Automated Integration Tests (5/5)** | `AnalyticsControllerIntegrationTest.java` | 100% pass rate: RBAC 403 checks, small-cell suppression verification, mathematical aggregate reconciliation, OWASP CSV sanitization, and PII exclusion checks. | **Verified** |
+| **Frontend Admin Dashboard & Analytics UI** | `AdminDashboardPage.jsx`, `analyticsApi.js`, `Navbar.jsx` | 4-tab interface: Operational & Incident Analytics, Educational Assessments, ML Telemetry, and Research Data Export Center with CSV download triggers. | **Verified** |

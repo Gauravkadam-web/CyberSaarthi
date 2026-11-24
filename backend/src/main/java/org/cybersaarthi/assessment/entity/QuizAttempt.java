@@ -92,6 +92,10 @@ public class QuizAttempt {
         return answers;
     }
 
+    public double getScorePercentage() {
+        return maxScore > 0 ? ((double) score / maxScore) * 100.0 : 0.0;
+    }
+
     public void setAnswers(List<QuizAttemptAnswer> answers) {
         this.answers = answers;
     }

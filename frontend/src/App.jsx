@@ -15,6 +15,7 @@ import ReportSubmissionPage from './pages/ReportSubmissionPage';
 import MyReportsPage from './pages/MyReportsPage';
 import ReportDetailPage from './pages/ReportDetailPage';
 import AdminReviewQueuePage from './pages/AdminReviewQueuePage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="/reports" element={<MyReportsPage />} />
               <Route path="/reports/:id" element={<ReportDetailPage />} />
               <Route path="/admin/reports" element={<AdminReviewQueuePage />} />
+              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/my-attempts" element={<MyAttemptsPage />} />

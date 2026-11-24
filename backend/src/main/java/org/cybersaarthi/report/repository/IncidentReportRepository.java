@@ -1,3 +1,4 @@
+
 package org.cybersaarthi.report.repository;
 
 import org.cybersaarthi.report.entity.IncidentReport;
@@ -30,4 +31,21 @@ public interface IncidentReportRepository extends JpaRepository<IncidentReport, 
             @Param("query") String query,
             Pageable pageable
     );
+
+    long countByCurrentStatus(ReportStatus status);
+
+    @Query("SELECT COALESCE(SUM(r.financialLossAmount), 0) FROM IncidentReport r")
+    java.math.BigDecimal sumFinancialLoss();
+
+    @Query("SELECT COALESCE(AVG(r.financialLossAmount), 0) FROM IncidentReport r WHERE r.financialLossAmount IS NOT NULL AND r.financialLossAmount > 0")
+    java.math.BigDecimal avgFinancialLoss();
+
+    @Query("SELECT r.incidentChannel, COUNT(r) FROM IncidentReport r GROUP BY r.incidentChannel")
+    List<Object[]> countByIncidentChannel();
+
+    @Query("SELECT COALESCE(r.reviewedCategoryId, r.userSelectedCategoryId), COUNT(r) FROM IncidentReport r GROUP BY COALESCE(r.reviewedCategoryId, r.userSelectedCategoryId)")
+    List<Object[]> countByEffectiveCategory();
+
+    @Query("SELECT r FROM IncidentReport r ORDER BY r.submittedAt DESC")
+    List<IncidentReport> findAllForExport();
 }
