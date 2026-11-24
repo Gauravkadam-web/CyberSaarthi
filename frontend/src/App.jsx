@@ -22,9 +22,12 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
           <EmergencyBanner />
           <Navbar />
-          <main style={{ flex: 1 }}>
+          <main id="main-content" style={{ flex: 1 }} tabIndex={-1}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/awareness" element={<AwarenessCatalogPage />} />

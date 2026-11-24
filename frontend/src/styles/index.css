@@ -40,6 +40,41 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Accessibility: High-contrast focus visible ring (WCAG 2.1 AA - 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Skip to Main Content Link (WCAG 2.4.1) */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 1rem;
+  background: var(--primary-color);
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  z-index: 10000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #FEF08A;
+}
+
 /* Layout Containers */
 .container {
   max-width: 1200px;

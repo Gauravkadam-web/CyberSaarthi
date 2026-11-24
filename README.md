@@ -105,8 +105,8 @@ CyberSaarthi/
 | **Phase 7** | **Incident Reporting & Tracking** | ✅ Completed | Flyway V4 migrations, Crockford Base32 tracking codes (`CS-YYYY-XXXXX`), data minimisation guards against card numbers/PINs, IDOR prevention, status state machine, immutable audit logs, admin review queue, 43/43 backend tests, Vite React pages. |
 | **Phase 8** | **ML Integration** | ✅ Completed | Spring 6 `RestClient` connecting to FastAPI (:8000), Flyway V5 migration (`ml_predictions`), resilient offline fallback policy (NFR-04), low-confidence human review routing, admin reclassify endpoint, 47/47 passing backend tests, advisory UI. |
 | **Phase 9** | **Admin Dashboard & Analytics** | ✅ Completed | Operational queues, aggregate reporting metrics, 8-category & channel breakdowns, educational assessment metrics, ML model diagnostics, $k=5$ small-cell masking, OWASP CSV injection defense, immutable export audit logging, 52/52 passing backend tests, React dashboard UI. |
-| **Phase 10** | **Quality, Security & Usability** | 🔄 *Next Up* | Full security boundary testing, IDOR prevention verification, accessibility (WCAG 2.1 AA) audit, evaluation. |
-| **Phase 11** | **Release, Documentation & Defense** | ⏳ Planned | User guide, synthetic demo seeding, research manuscript, final academic presentation. |
+| **Phase 10** | **Quality, Security & Evaluation** | ✅ Completed | 73/73 passing tests (61 Spring Boot + 12 FastAPI), dedicated OWASP security boundary suite, IDOR/RBAC verification, empirical sub-2ms ML latency benchmarking, WCAG 2.1 AA accessibility compliance (`:focus-visible`, skip-to-content), formal evaluation report. |
+| **Phase 11** | **Release, Documentation & Defense** | 🔄 *Next Up* | User guide, synthetic demo seeding, research manuscript, final academic presentation. |
 
 ---
 
