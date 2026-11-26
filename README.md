@@ -106,38 +106,44 @@ CyberSaarthi/
 | **Phase 8** | **ML Integration** | ✅ Completed | Spring 6 `RestClient` connecting to FastAPI (:8000), Flyway V5 migration (`ml_predictions`), resilient offline fallback policy (NFR-04), low-confidence human review routing, admin reclassify endpoint, 47/47 passing backend tests, advisory UI. |
 | **Phase 9** | **Admin Dashboard & Analytics** | ✅ Completed | Operational queues, aggregate reporting metrics, 8-category & channel breakdowns, educational assessment metrics, ML model diagnostics, $k=5$ small-cell masking, OWASP CSV injection defense, immutable export audit logging, 52/52 passing backend tests, React dashboard UI. |
 | **Phase 10** | **Quality, Security & Evaluation** | ✅ Completed | 73/73 passing tests (61 Spring Boot + 12 FastAPI), dedicated OWASP security boundary suite, IDOR/RBAC verification, empirical sub-2ms ML latency benchmarking, WCAG 2.1 AA accessibility compliance (`:focus-visible`, skip-to-content), formal evaluation report. |
-| **Phase 11** | **Release, Documentation & Defense** | 🔄 *Next Up* | User guide, synthetic demo seeding, research manuscript, final academic presentation. |
+| **Phase 11** | **Release, Documentation & Defense** | ✅ Completed | Synthetic demo seed scripts (`demo_seed_data.sql`), user & admin operational manuals (`docs/user-guide.md`), multi-tier Dockerization (`docker-compose.yml`), academic research manuscript & defense guide (`docs/research-defense-guide.md`), v1.0.0 release tagging. |
 
 ---
 
-## 5. Quickstart: Running the ML Inference Service
+## 5. Quickstart & Deployment
 
-The ML service can be launched independently using the virtual environment in `ml/.venv`:
+### One-Command Launch via Docker Compose (Recommended):
+```bash
+docker compose up --build -d
+```
+- **Web Portal:** [http://localhost:3000](http://localhost:3000)
+- **Spring Boot API (Swagger):** [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- **FastAPI ML Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
 
-### Windows PowerShell:
+### Seeding Synthetic Demo Data:
+To populate realistic non-PII incident cases, quiz attempts, and review notes:
 ```powershell
-.\scripts\run_ml_service.ps1
+.\scripts\seed_demo_data.ps1
 ```
 
-### Windows Command Prompt (cmd):
-```cmd
-scripts\run_ml_service.bat
-```
-
-### Interactive API Documentation:
-Once running, open your browser at:
-* **Interactive Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-* **OpenAPI ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-* **Health Check:** [http://127.0.0.1:8000/api/v1/health](http://127.0.0.1:8000/api/v1/health)
-
-### Running Automated ML Tests:
-```powershell
-& ".\ml\.venv\Scripts\pytest.exe" -v ml/tests
-```
+### Pre-Configured Demo Accounts:
+- **Administrator:** `admin@cybersaarthi.org` / `CyberSaarthi@123`
+- **Citizen Reporter:** `citizen@cybersaarthi.org` / `CyberSaarthi@123`
+- **Student Learner:** `student@cybersaarthi.org` / `CyberSaarthi@123`
 
 ---
 
-## 6. Security and Privacy Guidelines
+## 6. Project Documentation Index
+
+- **[Setup & Deployment Guide](docs/setup-guide.md):** Prerequisites, Docker Compose, and native local development instructions.
+- **[User Guide & Administrator Handbook](docs/user-guide.md):** Complete walkthrough for citizen reporting, tracking, quizzes, queue review, and CSV research exports.
+- **[Academic Manuscript & Defense Guide](docs/research-defense-guide.md):** Research methodology, RQ findings, literature gap resolution, architecture defense, and 10 viva voce examination Q&A answers.
+- **[Quality, Security & Evaluation Report](docs/evaluation-and-testing-report.md):** OWASP Top 10 matrix, empirical latency percentiles, and WCAG 2.1 AA accessibility scorecard.
+- **[Requirements Traceability Matrix (RTM)](docs/traceability-matrix.md):** 100% verified mapping of all functional (FR-01 to FR-09) and non-functional requirements (NFR-01 to NFR-10).
+
+---
+
+## 7. Security and Privacy Guidelines
 
 - **Never commit real secrets:** Always verify `git status` and diffs before committing.
 - **Data Minimisation:** Do not collect or store passwords, OTPs, PINs, or financial account credentials.

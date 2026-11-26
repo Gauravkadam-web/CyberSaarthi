@@ -84,6 +84,7 @@ application-local.yml
 *.db
 *.sql
 !**/db/migration/*.sql
+!**/db/demo/*.sql
 *.dump
 
 # IDE and OS files

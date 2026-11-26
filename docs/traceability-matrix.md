@@ -1,6 +1,6 @@
 # Requirements Traceability Matrix (RTM)
 ## CyberSaarthi — Cybercrime Awareness and Reporting Portal
-**Version:** 1.2 | **Status:** Phase 2 Updated
+**Version:** 2.0 | **Status:** Phase 11 Release v1.0.0 Signed Off
 
 This matrix maps each requirement specified in [SRS.md](SRS.md) and [PRD.md](PRD.md) to its architectural component, database entities, target implementation phase, test strategy, and current status.
 
@@ -156,3 +156,16 @@ This RTM is a living document. At the conclusion of each development phase, upda
 | **Accessibility (WCAG 2.1 AA) Enhancements** | `index.css`, `App.jsx` | Implemented global `:focus-visible` outline rings (2px solid Trust Navy), Skip to Main Content shortcut (`.skip-link`), ARIA landmarks, and contrast validation. | **Verified** |
 | **Performance Benchmarking** | `ml/training/artifacts/` | Empirical pipeline latency benchmarking: p50=0.568ms, p95=1.824ms, p99=2.354ms on scikit-learn champion model. | **Verified** |
 | **Comprehensive Quality & Evaluation Report** | `docs/evaluation-and-testing-report.md` | Authoring complete OWASP Top 10 matrix, latency percentile table, WCAG 2.1 AA scorecard, and system limitations. | **Verified** |
+
+---
+
+## 14. Phase 11 Deliverables & Evidence Log
+
+| Deliverable | Document Path / Code Reference | Notes | Status |
+|---|---|---|---|
+| **Synthetic Demo Seed Script** | `backend/src/main/resources/db/demo/demo_seed_data.sql`, `scripts/seed_demo_data.ps1`, `scripts/seed_demo_data.bat` | Seeds demo accounts (`admin`, `citizen`, `student`), 12+ realistic non-PII incidents across 8 categories/channels, review notes, ML predictions, and quiz attempts. | **Verified** |
+| **User Guide & Admin Handbook** | `docs/user-guide.md` | Complete end-user citizen manual (filing, tracking, assessments) and administrator handbook (queue triage, status transitions, analytics, CSV exports). | **Verified** |
+| **Multi-Tier Containerization** | `backend/Dockerfile`, `ml/Dockerfile`, `frontend/Dockerfile`, `frontend/nginx.conf`, `docker-compose.yml` | Multi-stage Docker definitions for PostgreSQL 16, FastAPI, Spring Boot 3.4.2 (Java 21), and React Vite (Nginx). | **Verified** |
+| **Setup & Deployment Guide** | `docs/setup-guide.md` | Step-by-step instructions for one-command Docker deployment and native multi-service local development. | **Verified** |
+| **Academic Manuscript & Defense Guide** | `docs/research-defense-guide.md` | Comprehensive research methodology, RQ findings, literature gap resolution, architecture defense, and 10 viva voce examination Q&A answers. | **Verified** |
+| **Release v1.0.0 Tagging** | Git tag `v1.0.0` | Project frozen, documentation finalized, full traceability verified. | **Verified** |
