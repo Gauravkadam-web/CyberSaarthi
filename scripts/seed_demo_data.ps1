@@ -1,4 +1,4 @@
-﻿# CyberSaarthi — Seed Demonstration Dataset Script
+# CyberSaarthi — Seed Demonstration Dataset Script
 # Target: PostgreSQL local dev database (cybersaarthi_dev)
 
 param (
